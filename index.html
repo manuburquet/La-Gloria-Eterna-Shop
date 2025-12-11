@@ -202,7 +202,24 @@
             width: 320px;
             text-align: center;
         }
-    </style>
+    /* Efecto dorado animado shimmer */
+@keyframes goldShimmer {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+.gold-shimmer {
+    background: linear-gradient(90deg, #b8860b, #ffd700, #fff8d0, #ffd700, #b8860b);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: goldShimmer 4s linear infinite;
+    font-family: 'Merriweather', serif;
+    font-weight: 900;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    font-size: 4rem;
+}
+</style>
 </head>
 
 <body>
@@ -218,7 +235,7 @@
 </header>
 
 <div class="hero">
-    <span style="font-family: 'Merriweather', serif; font-weight: 900; letter-spacing: 4px; text-transform: uppercase; font-size: 4rem; background: linear-gradient(90deg, #0a1a4a, #d4af37); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">¡Viste tu pasión, alcanza la gloria eterna!</span>
+    <span class="gold-shimmer">¡Viste tu pasión, alcanza la gloria eterna!</span>
 </div>
 
 <h2 class="section-title">Disponibilidad</h2>
@@ -295,4 +312,31 @@ document.getElementById("close-cart").addEventListener("click", () => {
 
 document.getElementById("empty-cart").addEventListener("click", () => {
     cart = [];
+    localStorage.setItem("cart", JSON.stringify(cart));
+    loadCart();
+    updateCartCount();
+});
 
+function loadCart() {
+    const cartList = document.getElementById("cart-items");
+    cartList.innerHTML = "";
+
+    let total = 0;
+
+    cart.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.textContent = `${item.title} - $${item.price}`;
+        cartList.appendChild(li);
+        total += item.price;
+    });
+
+    document.getElementById("cart-total").textContent = `Total: $${total}`;
+}
+
+function updateCartCount() {
+    document.getElementById("cart-count").textContent = cart.length;
+}
+</script>
+
+</body>
+</html>
